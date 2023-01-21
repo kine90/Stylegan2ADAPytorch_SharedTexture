@@ -134,7 +134,7 @@ def spout_proc(handle, spout_pars, u, device):
     spout.createSender(name = spout_pars.name)
 
     while True:
-        #u.get()
+        u.get()
         tex = gfx2cuda.open_ipc_texture(handle)
         pic = torch.ones(1024, 1024, 4).to(device)
         with tex:
@@ -192,7 +192,6 @@ def main(
     device = torch.device('cuda')
     with dnnlib.util.open_url(now_gen_par.model) as f:
         G = legacy.load_network_pkl(f)['G_ema'].to(device) # type: ignore
-    label = torch.zeros([1, G.c_dim], device=device)
 
     oldz = torch.from_numpy(np.random.RandomState(now_gen_par.seed).randn(1, G.z_dim)).to(device)
     oldw_samples = G.mapping(oldz, None,  truncation_psi=now_gen_par.truncation_psi)
@@ -224,7 +223,7 @@ def main(
             print("EXITING")
             exit()
 
-        print('Generating image for seed {} Last took {}s. HANDLE {}'.format(now_gen_par.seed, elaps, outtex.ipc_handle))
+        print('Seed {} - FPS {}'.format(now_gen_par.seed, elaps))
         z = torch.from_numpy(np.random.RandomState(now_gen_par.seed).randn(1, G.z_dim)).to(device)
         # z TENSOR SIZE IS: torch.Size([1, 512])
         if now_gen_par.z_int != 0:  
@@ -243,9 +242,9 @@ def main(
         img = torch.cat((img, alpha), 2)
         with outtex:
             outtex.copy_from(img)
-        #u.put(True)
+        u.put(True)
 
-        elaps = time.perf_counter() - t0
+        elaps = 1/(time.perf_counter() - t0)
 
 #----------------------------------------------------------------------------
 
