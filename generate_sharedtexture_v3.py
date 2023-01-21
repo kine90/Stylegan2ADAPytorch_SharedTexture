@@ -28,10 +28,6 @@ from Library.Spout import Spout
 #####################################################
 #########################################################
 
-#SETTINGS
-udp_timeout = 0.0001
-
-
 #----------------------------------------------------------------------------
 
 
@@ -57,10 +53,19 @@ class spout_pars:
 #----------------------------------------------------------------------------
 
 #UDP AND INPUT PROCESS
-def udp_ops(q, first_gen_pars, socket):
+def udp_ops(q, first_gen_pars, ip, udp_in, udp_out):
     my_pars = first_gen_pars
-    mysock = socket
+    print("starting UDP.... IP={}, LISTEN= {}, SEND= {}".format(ip, udp_in, udp_out))
+    mysock = socket.socket(socket.AF_INET, # Internet
+                          socket.SOCK_DGRAM) # UDP
+    mysock.settimeout(0.0001)
 
+    #Bind to receiving ip and port
+    try:
+        mysock.bind((ip, udp_in))
+    except:
+        print("Can`t bind listening port!")
+    print("done!")
 
     def seed():
         my_pars.seed = int(msg)
@@ -120,24 +125,74 @@ def udp_ops(q, first_gen_pars, socket):
 
 #----------------------------------------------------------------------------
 
-##IMEAGE GENERATOR LOOP
-def gen_proc (q, first_gen_pars, spout_pars):
-    #NETWORK
-    print("Starting generator process....")
-    now_gen_par = first_gen_pars
 
+### Spout process
+def spout_proc(handle, spout_pars, u, device):
+    #SPOUT
+    print("starting spout... NAME = {}, SILENT= {}".format(spout_pars.name, spout_pars.silent))
+    spout = Spout(silent = spout_pars.silent , width = 1024, height = 1024 )
+    spout.createSender(name = spout_pars.name)
+
+    while True:
+        #u.get()
+        tex = gfx2cuda.open_ipc_texture(handle)
+        pic = torch.ones(1024, 1024, 4).to(device)
+        with tex:
+            tex.copy_to(pic)
+        pic = (pic[:, :, :3]*255).clamp(0, 255).cpu().numpy()
+        spout.send(pic)
+        spout.check()
+        time.sleep(0.002)
+
+#----------------------------------------------------------------------------
+
+
+#----------------------------------------------------------------------------
+@click.command()
+@click.pass_context
+@click.option('--network', 'network_pkl', help='Network pickle filename', required=True)
+@click.option('--trunc', 'truncation_psi', type=float, help='Truncation psi', default=1.2, show_default=True)
+@click.option('--noise-mode', help='Noise mode', type=click.Choice(['const', 'random', 'none']), default='const', show_default=True)
+@click.option('--spout-name', 'spout_name', help='Spout sender name', default="TorchSpout", show_default=True)
+@click.option('--spout-window', 'spout_silent',  type=bool, help='Show window for spout output, default False', default=True) #to hide window silend should be true
+@click.option('--udp-in', 'udp_in', type=int, help='UDP listening port', default=5005,show_default=True)
+@click.option('--udp-out', 'udp_out', type=int, help='UDP output port', default=5006,show_default=True)
+@click.option('--ip', 'ip', help='UDP IP to communicate with, default localhost', default="127.0.0.1",show_default=True)
+
+
+######################################################################################################################
+### MAIN #############################################################################################################
+ 
+def main(
+    ctx: click.Context,
+    network_pkl: str,
+    truncation_psi: float,
+    noise_mode: str,
+    spout_name: str,
+    spout_silent: bool,
+    udp_in: int,
+    udp_out: int,
+    ip: str,
+):
+
+
+    now_gen_par = gen_par(network_pkl, truncation_psi, noise_mode)
+    my_spout_pars = spout_pars(spout_name, spout_silent )
+
+    q = mp.Queue(1)
+    u = mp.Queue(1)
+    
+    #gp = mp.Process(target=gen_proc, args=(q, now_gen_par, my_spout_pars))
+    up = mp.Process(target=udp_ops, args=(q, now_gen_par, ip, udp_in, udp_out))
+    up.daemon = True
+    up.start()
+
+    #NETWORK
     print('Loading networks from "%s"...' % now_gen_par.model)
     device = torch.device('cuda')
     with dnnlib.util.open_url(now_gen_par.model) as f:
         G = legacy.load_network_pkl(f)['G_ema'].to(device) # type: ignore
     label = torch.zeros([1, G.c_dim], device=device)
-    print("Generator load Done!")
-
-    #SPOUT
-    print("starting spout... NAME = {}, SILENT= {}".format(spout_pars.name, spout_pars.silent))
-    spout = Spout(silent = spout_pars.silent , width = G.img_resolution, height = G.img_resolution )
-    spout.createSender(name = spout_pars.name)
-
 
     oldz = torch.from_numpy(np.random.RandomState(now_gen_par.seed).randn(1, G.z_dim)).to(device)
     oldw_samples = G.mapping(oldz, None,  truncation_psi=now_gen_par.truncation_psi)
@@ -149,17 +204,14 @@ def gen_proc (q, first_gen_pars, spout_pars):
     # synth img TENSOR SIZE IS: torch.Size([1, 3, 1024, 1024])
     alpha = torch.ones(1024, 1024, 1).to(device)
     img = torch.cat((img, alpha), 2)
-    print(img.dtype)
-    print(img.shape)
     #init ouput texture
     outtex = gfx2cuda.texture(img)
-    print("Shared Texture Output HANDLE: {}".format(outtex.ipc_handle))
-    print("done!")
-    spout.send(outtex)
-    spout.check()
-    
 
+    print("Network and sharedtexture initialized!")
 
+    sp = mp.Process(target=spout_proc, args=(outtex.ipc_handle, my_spout_pars, u, device))
+    sp.daemon = True
+    sp.start()
 
     elaps = 0
     while True:
@@ -191,80 +243,9 @@ def gen_proc (q, first_gen_pars, spout_pars):
         img = torch.cat((img, alpha), 2)
         with outtex:
             outtex.copy_from(img)
-        spout.send(outtex)
-        spout.check()
+        #u.put(True)
 
         elaps = time.perf_counter() - t0
-
-#----------------------------------------------------------------------------
-
-
-#----------------------------------------------------------------------------
-@click.command()
-@click.pass_context
-@click.option('--network', 'network_pkl', help='Network pickle filename', required=True)
-@click.option('--seed', type=int, help='random seed', default=0)
-@click.option('--trunc', 'truncation_psi', type=float, help='Truncation psi', default=1.2, show_default=True)
-@click.option('--class', 'class_idx', type=int, help='Class label (unconditional if not specified)')
-@click.option('--noise-mode', help='Noise mode', type=click.Choice(['const', 'random', 'none']), default='const', show_default=True)
-@click.option('--projected-w', help='Projection result file', type=str, metavar='FILE')
-#@click.option('--outdir', help='Where to save the output images', default="./results", metavar='DIR')
-@click.option('--spout-name', 'spout_name', help='Spout sender name', default="TorchSpout", show_default=True)
-@click.option('--spout-window', 'spout_silent',  type=bool, help='Show window for spout output, default False', default=True) #to hide window silend should be true
-@click.option('--udp-in', 'udp_in', type=int, help='UDP listening port', default=5005,show_default=True)
-@click.option('--udp-out', 'udp_out', type=int, help='UDP output port', default=5006,show_default=True)
-@click.option('--ip', 'ip', help='UDP IP to communicate with, default localhost', default="127.0.0.1",show_default=True)
-
-
-######################################################################################################################
-### MAIN #############################################################################################################
- 
-def main(
-    ctx: click.Context,
-    network_pkl: str,
-    seed: int,
-    truncation_psi: float,
-    noise_mode: str,
-    #outdir: str,
-    class_idx: Optional[int],
-    projected_w: Optional[str],
-    spout_name: str,
-    spout_silent: bool,
-    udp_in: int,
-    udp_out: int,
-    ip: str,
-):
-
-    now_gen_par = gen_par(network_pkl, truncation_psi, noise_mode)
-    my_spout_pars = spout_pars(spout_name, spout_silent )
-
-    ## START UDP
-    ####################################################################
-    print("starting UDP.... IP={}, LISTEN= {}, SEND= {}".format(ip, udp_in, udp_out))
-    sock = socket.socket(socket.AF_INET, # Internet
-                          socket.SOCK_DGRAM) # UDP
-    sock.settimeout(udp_timeout)
-
-    #Bind to receiving ip and port
-    try:
-        sock.bind((ip, udp_in))
-    except:
-        print("Can`t bind listening port!")
-    print("done!")
-
-
-    #START MULTIPLE PROCESSES
-    ###################################################################
-
-    q = mp.Queue(1)
-    
-    #gp = mp.Process(target=gen_proc, args=(q, now_gen_par, my_spout_pars))
-    up = mp.Process(target=udp_ops, args=(q, now_gen_par, sock))
-    up.daemon = True
-    #gp.start()
-    #time.sleep(10)
-    up.start()
-    gen_proc(q, now_gen_par, my_spout_pars)
 
 #----------------------------------------------------------------------------
 
