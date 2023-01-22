@@ -23,12 +23,14 @@ import pygame
 from pygame.locals import *
 import gfx2cuda
 from Library.Spout import Spout
+torch.set_grad_enabled(False)
 
 ######################################################
 #####################################################
 #########################################################
 
 #----------------------------------------------------------------------------
+
 def info(arr):
     """Shows statistics and shape information of (lists of) np.arrays/th.tensors
     Args:
@@ -133,13 +135,11 @@ def udp_ops(q, first_gen_pars, ip, udp_in, udp_out):
 
 #----------------------------------------------------------------------------
 
-
-### Spout process
-def spout_proc(handle, spout_pars, u, device):
+def spout_send(handle, spout_pars, u, device):
     #SPOUT
-    print("starting spout... NAME = {}, SILENT= {}".format(spout_pars.name, spout_pars.silent))
-    spout = Spout(silent = spout_pars.silent , width = 1024, height = 1024 )
-    spout.createSender(name = spout_pars.name)
+    print("starting spout SENDER... NAME = {}, SILENT= {}".format(spout_pars.name, spout_pars.silent))
+    spoutsnd = Spout(silent = spout_pars.silent , width = 1024, height = 1024 )
+    spoutsnd.createSender(name = spout_pars.name)
 
     while True:
         u.get()
@@ -148,8 +148,8 @@ def spout_proc(handle, spout_pars, u, device):
         with tex:
             tex.copy_to(pic)
         pic = (pic[:, :, :3]*255).clamp(0, 255).cpu().numpy()
-        spout.send(pic)
-        spout.check()
+        spoutsnd.send(pic)
+        spoutsnd.check()
         time.sleep(0.002)
 
 #----------------------------------------------------------------------------
@@ -191,9 +191,9 @@ def main(
     u = mp.Queue(1)
     
     #gp = mp.Process(target=gen_proc, args=(q, now_gen_par, my_spout_pars))
-    up = mp.Process(target=udp_ops, args=(q, now_gen_par, ip, udp_in, udp_out))
-    up.daemon = True
-    up.start()
+    #up = mp.Process(target=udp_ops, args=(q, now_gen_par, ip, udp_in, udp_out))
+    #up.daemon = True
+    #up.start()
 
     #NETWORK
     print('Loading networks from "%s"...' % now_gen_par.model)
@@ -201,60 +201,48 @@ def main(
     with dnnlib.util.open_url(now_gen_par.model) as f:
         G = legacy.load_network_pkl(f)['G_ema'].to(device) # type: ignore
 
-    oldz = torch.from_numpy(np.random.RandomState(now_gen_par.seed).randn(1, G.z_dim)).to(device)
-    oldw_samples = G.mapping(oldz, None,  truncation_psi=now_gen_par.truncation_psi)
+    print("Network init")
 
-    #Generate a first image so we can properly initialize the shared texture
-    w_samples = G.mapping(oldz, None,  truncation_psi=now_gen_par.truncation_psi)
+    print("starting spout RECEIVER... NAME = latent")
+    spoutrcv = Spout(silent = True , width = 512, height = 1 )
+    spoutrcv.createReceiver(name = "latent")
+    time.sleep(2)
+
+
+    #zdata = spoutrcv.receive()
+    z = torch.reshape((torch.from_numpy(spoutrcv.receive())[:,:,:1]), (1,512))# * (1/127.5) - 128).permute(1,0).to(device, dtype = torch.float)
+    z = ((z - 127.5) * ( 4.0 / 127.5) ).to(device, dtype = torch.float)
+    info(z)
+    print("Received spout data, generating...")
+
+    w_samples = G.mapping(z, None,  truncation_psi=now_gen_par.truncation_psi)
+    oldw_samples = w_samples
+    if now_gen_par.w_int != 0:
+        w_samples = ((w_samples * now_gen_par.w_int) + (oldw_samples * (1 - now_gen_par.w_int)))
+    oldw_samples = w_samples
+    #print("W_SAMPLES RCV SIZE IS:{}".format(w_samples.size()))
+    #print(w_samples)
+
     img = G.synthesis(w_samples, noise_mode=now_gen_par.noise_mode)
-    img = (img[0].permute( 1, 2, 0) * 0.5 + 0.5)
     # synth img TENSOR SIZE IS: torch.Size([1, 3, 1024, 1024])
-    alpha = torch.ones(1024, 1024, 1).to(device)
-    img = torch.cat((img, alpha), 2)
+    print("NETWORK READY")
+    img = (img[0].permute( 1, 2, 0) * 127.5 + 128).clamp(0, 255).to(dtype=torch.uint8)
+    alpha = torch.full((1024, 1024, 1),255, dtype = torch.uint8).to(device)
+    img = torch.cat((img, alpha), 2).to(dtype=torch.uint8)
+
+    
+    #info(img)
     #init ouput texture
-    outtex = gfx2cuda.texture(img)
-
-    print("Network and sharedtexture initialized!")
-
-    sp = mp.Process(target=spout_proc, args=(outtex.ipc_handle, my_spout_pars, u, device))
-    sp.daemon = True
-    sp.start()
-
-    elaps = 0
+    test = torch.full((1024, 1024, 4), 0.5, dtype = torch.float).to(device)
+    print(test.type())
+    outtex = gfx2cuda.texture(test)
+    print(outtex.ipc_handle)
+    print(test)
     while True:
-        t0 = time.perf_counter()
-        try:
-            now_gen_par = q.get_nowait()
-        except:
-            pass
-        if now_gen_par.terminate:
-            print("EXITING")
-            exit()
-
-        print('Seed {} - FPS {}'.format(now_gen_par.seed, elaps))
-        z = torch.from_numpy(np.random.RandomState(now_gen_par.seed).randn(1, G.z_dim)).to(device)
-        # z TENSOR SIZE IS: torch.Size([1, 512])
-        print("Z INFO----------------------------------------------------------")
-        info(z)
-        if now_gen_par.z_int != 0:  
-            z = ((z * now_gen_par.z_int) + (oldz * (1 - now_gen_par.z_int)))
-        oldz = z
-
-        w_samples = G.mapping(z, None,  truncation_psi=now_gen_par.truncation_psi)
-        if now_gen_par.w_int != 0:
-            w_samples = ((w_samples * now_gen_par.w_int) + (oldw_samples * (1 - now_gen_par.w_int)))
-        oldw_samples = w_samples
-        
-        #img = G(z, label, truncation_psi=now_gen_par.truncation_psi, noise_mode=now_gen_par.noise_mode)
-        img = G.synthesis(w_samples, noise_mode=now_gen_par.noise_mode)
-        # synth img TENSOR SIZE IS: torch.Size([1, 3, 1024, 1024])
-        img = (img[0].permute( 1, 2, 0) * 0.5 + 0.5)
-        img = torch.cat((img, alpha), 2)
         with outtex:
-            outtex.copy_from(img)
-        u.put(True)
+            outtex.copy_from(test)
+        time.sleep(0.001)
 
-        elaps = 1/(time.perf_counter() - t0)
 
 #----------------------------------------------------------------------------
 
