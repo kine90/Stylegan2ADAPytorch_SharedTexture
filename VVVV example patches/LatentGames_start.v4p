@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50beta42.dtd" >
-   <PATCH nodename="D:\GitHub\Stylegan2ADAPytorch_SharedTexture\VVVV example patches\sharedmemo_Z_nospout.v4p" scrollx="8" scrolly="-360" systemname="sharedmemo_Z_nospout" filename="D:\ML\stylegan2-ada-pytorch_spout\vvvv\sharedmemo_Z_nospout.v4p" bgcolor="16749922">
-   <BOUNDS type="Window" left="1376" top="-88" width="14632" height="15880">
+   <PATCH nodename="D:\GitHub\Stylegan2ADAPytorch_SharedTexture\VVVV example patches\LatentGames_start.v4p" scrollx="8" scrolly="-360" systemname="LatentGames_start" filename="D:\GitHub\Stylegan2ADAPytorch_SharedTexture\VVVV example patches\LatentGames_start.v4p" bgcolor="16749922">
+   <BOUNDS type="Window" left="4440" top="184" width="14632" height="15880">
    </BOUNDS>
    <PACK Name="dx11" Version="1.3.1">
    </PACK>
@@ -139,7 +139,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="4480" top="592" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="3221226882">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="2147486658">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="G">
    </PIN>
@@ -244,7 +244,7 @@
    </LINK>
    <LINK srcnodeid="47" srcpinname="Output Node" dstnodeid="36" dstpinname="Texture In">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="205">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="205" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="1304" top="3120" width="696" height="224">
    </BOUNDS>
    <BOUNDS type="Node" left="1304" top="3120" width="0" height="0">
@@ -268,7 +268,7 @@
    <PIN pinname="Maximum Background FPS" slicecount="1" visible="1" values="25">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="206">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="206" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="336" top="696" width="696" height="208">
    </BOUNDS>
    <BOUNDS type="Node" left="336" top="696" width="0" height="0">
@@ -462,7 +462,7 @@
    </LINK>
    <LINK srcnodeid="225" srcpinname="Output" dstnodeid="223" dstpinname="Input 2">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="227">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="227" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="2240" top="6920" width="696" height="208">
    </BOUNDS>
    <BOUNDS type="Node" left="2240" top="6920" width="0" height="0">
@@ -474,10 +474,10 @@
    </NODE>
    <LINK srcnodeid="225" srcpinname="Output" dstnodeid="227" dstpinname="Y Input Value">
    </LINK>
-   <NODE systemname="Z_UDPcontrols" filename="subpatches\Z_UDPcontrols.v4p" nodename="subpatches\Z_UDPcontrols.v4p" componentmode="InAWindow" id="229">
-   <BOUNDS type="Node" left="2593" top="1052" width="0" height="0">
+   <NODE systemname="Z_UDPcontrols" filename="subpatches\Z_UDPcontrols.v4p" nodename="subpatches\Z_UDPcontrols.v4p" componentmode="Hidden" id="229">
+   <BOUNDS type="Node" left="2545" top="1228" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="2224" top="0" width="7160" height="9844">
+   <BOUNDS type="Box" left="2176" top="176" width="7160" height="9844">
    </BOUNDS>
    <BOUNDS type="Window" left="1632" top="5016" width="7160" height="9840">
    </BOUNDS>
@@ -494,7 +494,7 @@
    </LINK>
    <LINK srcnodeid="230" srcpinname="Texture Out" dstnodeid="47" dstpinname="Input Node">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="231">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="231" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="8552" top="7096" width="280" height="280">
    </BOUNDS>
    <BOUNDS type="Node" left="8552" top="7096" width="0" height="0">
