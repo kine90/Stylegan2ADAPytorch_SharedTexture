@@ -137,7 +137,7 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Smoothing">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -151,7 +151,7 @@
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="GammaXYZW">
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Y Input Value" slicecount="1" values="0.85">
    </PIN>
@@ -193,7 +193,7 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled">
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -258,7 +258,7 @@
    </LINK>
    <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Enabled">
    </LINK>
-   <BOUNDS type="Window" left="9544" top="3136" width="17616" height="10848">
+   <BOUNDS type="Window" left="216" top="3568" width="17616" height="10848">
    </BOUNDS>
    <NODE systemname="Kalle (VVVV)" nodename="Kalle (VVVV)" componentmode="Hidden" id="15">
    <BOUNDS type="Node" left="1664" top="328" width="100" height="100">

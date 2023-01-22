@@ -45,6 +45,10 @@
    </PIN>
    <PIN pinname="Shared Texture" slicecount="1" values="1">
    </PIN>
+   <PIN pinname="Clear Depth" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Depth Buffer Mode" slicecount="1" values="ReadOnly">
+   </PIN>
    </NODE>
    <NODE systemname="FullscreenQuad (DX11.Layer)" filename="%VVVV%\packs\dx11\nodes\modules\FullscreenQuad (DX11.Layer).v4p" nodename="FullscreenQuad (DX11.Layer)" componentmode="Hidden" id="3">
    <BOUNDS type="Node" left="1716" top="1508" width="100" height="100">
@@ -52,6 +56,8 @@
    <PIN pinname="Layer" visible="1">
    </PIN>
    <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="3" srcpinname="Layer" dstnodeid="2" dstpinname="Layer">
@@ -91,5 +97,17 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="2" srcpinname="Buffers" dstnodeid="7" dstpinname="Input Node">
+   </LINK>
+   <NODE systemname="Rasterizer (DX11.RenderState Advanced)" filename="%VVVV%\packs\dx11\nodes\plugins\base\VVVV.DX11.Nodes.dll" nodename="Rasterizer (DX11.RenderState Advanced)" componentmode="Hidden" id="9">
+   <BOUNDS type="Node" left="144" top="1144" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="144" top="1144" width="1600" height="1600">
+   </BOUNDS>
+   <PIN pinname="Render State" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Cull Mode" slicecount="1" values="Back">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="Render State" dstnodeid="3" dstpinname="Render State">
    </LINK>
    </PATCH>
