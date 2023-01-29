@@ -1,1 +1,0 @@
-python generate_receiveZ_singlethreadv2.py --network D:\ML\SADA_TORCH_NETS\psy_lastlast.pkl --pnum 1

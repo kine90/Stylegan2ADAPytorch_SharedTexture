@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50beta42.dtd" >
-   <PATCH nodename="D:\GitHub\Stylegan2ADAPytorch_SharedTexture\VVVV example patches\LatentGames_start.v4p" scrollx="8" scrolly="-360" systemname="LatentGames_start" filename="D:\GitHub\Stylegan2ADAPytorch_SharedTexture\VVVV example patches\LatentGames_start.v4p" bgcolor="16749922">
+   <PATCH nodename="D:\GitHub\Stylegan2ADAPytorch_SharedTexture\VVVV example patches\generate_receiveZ_start.v4p" scrollx="8" scrolly="-360" systemname="generate_receiveZ_start" filename="D:\GitHub\Stylegan2ADAPytorch_SharedTexture\VVVV example patches\generate_receiveZ_start.v4p" bgcolor="16749922">
    <BOUNDS type="Window" left="208" top="304" width="8904" height="11544">
    </BOUNDS>
    <PACK Name="dx11" Version="1.3.1">
@@ -256,7 +256,7 @@
    </LINK>
    <LINK srcnodeid="230" srcpinname="Texture Out" dstnodeid="47" dstpinname="Input Node">
    </LINK>
-   <NODE id="237" componentmode="Hidden" systemname="audioanalysis" filename="..\audioanalysis.v4p" nodename="..\audioanalysis.v4p">
+   <NODE id="237" componentmode="Hidden" systemname="audioanalysis" filename="subpatches\audioanalysis.v4p" nodename="..\audioanalysis.v4p">
    <BOUNDS type="Node" left="3832" top="1128" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Box" left="0" top="0" width="18300" height="8636">

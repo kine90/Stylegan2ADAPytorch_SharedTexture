@@ -127,7 +127,7 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Input" slicecount="1" values="0.55" visible="1">
+   <PIN pinname="Input" slicecount="1" visible="1" values="0.55">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="9" systemname="IOBox (Value Advanced)">
@@ -325,7 +325,7 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Source Minimum|">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="11" values="0.4,0,0,0,0,0,0,0,0,0,0">
+   <PIN pinname="Y Input Value" slicecount="11" values="0,0,0,0,0,0,0,0,0,0,0">
    </PIN>
    </NODE>
    <NODE systemname="Map (Value)" nodename="Map (Value)" componentmode="Hidden" id="17">
@@ -359,7 +359,7 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Source Maximum|">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="11" values="0.61,0.73,200,100,500,1,80,500,250,20000,2000">
+   <PIN pinname="Y Input Value" slicecount="11" values="0.24,0.73,200,100,500,1,80,500,250,20000,2000">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="19" systemname="IOBox (Value Advanced)">
@@ -749,7 +749,7 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="4" values="40,10,5,4">
+   <PIN pinname="Y Input Value" slicecount="4" values="7.9,3.1,2.3,1.8">
    </PIN>
    </NODE>
    <NODE systemname="Decay (Animation)" nodename="Decay (Animation)" componentmode="Hidden" id="49">
@@ -914,7 +914,7 @@
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
    </NODE>
-   <BOUNDS type="Window" left="3072" top="960" width="19896" height="12136">
+   <BOUNDS type="Window" left="10352" top="3240" width="19896" height="12136">
    </BOUNDS>
    <PACK Name="dx11" Version="1.3.1">
    </PACK>
@@ -1035,7 +1035,7 @@
    </PIN>
    </NODE>
    <NODE systemname="S (Value)" nodename="S (Value)" componentmode="Hidden" id="63">
-   <BOUNDS type="Node" left="13616" top="6792" width="100" height="100">
+   <BOUNDS type="Node" left="13672" top="7904" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input Value" visible="1">
    </PIN>
@@ -1061,7 +1061,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="1704" top="1760" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.55">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>

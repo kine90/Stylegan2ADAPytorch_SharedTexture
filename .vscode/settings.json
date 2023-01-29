@@ -1,3 +1,6 @@
 {
-    "python.pythonPath": "C:\\Users\\kine9\\anaconda3\\envs\\torch\\python.exe"
+    "python.pythonPath": "C:\\Users\\kine9\\anaconda3\\envs\\torch\\python.exe",
+    "files.associations": {
+        "*.yaml": "home-assistant"
+    }
 }

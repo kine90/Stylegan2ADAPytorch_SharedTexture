@@ -19,16 +19,16 @@ import torch
 import socket
 import legacy
 import time
-import pygame
-from pygame.locals import *
 import gfx2cuda
-from Library.Spout import Spout
+
+torch.set_grad_enabled(False)
+pin_memory = True
 
 ######################################################
 #####################################################
 #########################################################
 
-#----------------------------------------------------------------------------
+# UTILITIES ----------------------------------------------------------------------------
 def info(arr):
     """Shows statistics and shape information of (lists of) np.arrays/th.tensors
     Args:
@@ -39,7 +39,7 @@ def info(arr):
     else:
         print(list(arr.shape), f"{arr.min():.2f}", f"{arr.mean():.2f}", f"{arr.max():.2f}")
 
-#----------------------------------------------------------------------------
+# DATA STRUCTURES----------------------------------------------------------------------------
 class gen_par:
     def __init__(self, net, truncation_psi, noise_mode):
 
@@ -50,7 +50,6 @@ class gen_par:
         self.w_int = 0.1
         self.noise_mode = noise_mode
         self.terminate = False
-        self.inputhandle = 2147487170,
 
 class spout_pars:
     def __init__(self, name, silent):
@@ -58,23 +57,22 @@ class spout_pars:
         self.name = name
         self.silent = silent
 
-#----------------------------------------------------------------------------
-
-#UDP AND INPUT PROCESS
-def udp_ops(q, first_gen_pars, ip, udp_in, udp_out):
+# UDP INPUT PROCESS ----------------------------------------------------------------------------
+def udp_ops(q, first_gen_pars, udp_in):
     my_pars = first_gen_pars
-    print("starting UDP.... IP={}, LISTEN= {}, SEND= {}".format(ip, udp_in, udp_out))
+    print("starting UDP... LISTENING PORT = {}".format(udp_in))
     mysock = socket.socket(socket.AF_INET, # Internet
                           socket.SOCK_DGRAM) # UDP
     mysock.settimeout(0.0001)
 
     #Bind to receiving ip and port
     try:
-        mysock.bind((ip, udp_in))
+        mysock.bind(("127.0.0.1", udp_in))
     except:
         print("Can`t bind listening port!")
     print("done!")
-
+    
+    # DEFINE UDP STRINGS DECODING
     def seed():
         my_pars.seed = int(msg)
         print("Received new seed: {}".format(my_pars.seed))
@@ -108,51 +106,21 @@ def udp_ops(q, first_gen_pars, ip, udp_in, udp_out):
         "terminate": askclose
     }
     
-
+    time.sleep(20)
+    # LOOP
     while True:
-        #do things with data
-        #print("executing udp ops")
         time.sleep(0.001)
         try:
+            #RECEIVE UDPs
             data, addr = mysock.recvfrom(1024) # buffer size is 1024 bytes
-            #print("received message: %s" % data)
             msg_type, msg = data.decode('utf-8').strip().split("_")
-            #print("type: {} msg: {}".format(msg_type, msg))
+            #DECODE STRING
             switch[msg_type]()
+            #PUT PARS INTO QUEUE
             q.put_nowait(my_pars)
-            #print("queue added!")
         except:
-            #print("nothing to add....")
+            #Nothing new from udp...
             pass
-    
-        
-        
-        
-    
-
-
-#----------------------------------------------------------------------------
-
-
-### Spout process
-def spout_proc(handle, spout_pars, u, device):
-    #SPOUT
-    print("starting spout... NAME = {}, SILENT= {}".format(spout_pars.name, spout_pars.silent))
-    spout = Spout(silent = spout_pars.silent , width = 1024, height = 1024 )
-    spout.createSender(name = spout_pars.name)
-
-    while True:
-        u.get()
-        tex = gfx2cuda.open_ipc_texture(handle)
-        pic = torch.ones(1024, 1024, 4).to(device)
-        with tex:
-            tex.copy_to(pic)
-        pic = (pic[:, :, :3]*255).clamp(0, 255).cpu().numpy()
-        spout.send(pic)
-        spout.check()
-        time.sleep(0.002)
-
-#----------------------------------------------------------------------------
 
 
 #----------------------------------------------------------------------------
@@ -161,11 +129,7 @@ def spout_proc(handle, spout_pars, u, device):
 @click.option('--network', 'network_pkl', help='Network pickle filename', required=True)
 @click.option('--trunc', 'truncation_psi', type=float, help='Truncation psi', default=1.2, show_default=True)
 @click.option('--noise-mode', help='Noise mode', type=click.Choice(['const', 'random', 'none']), default='const', show_default=True)
-@click.option('--spout-name', 'spout_name', help='Spout sender name', default="TorchSpout", show_default=True)
-@click.option('--spout-window', 'spout_silent',  type=bool, help='Show window for spout output, default False', default=True) #to hide window silend should be true
 @click.option('--udp-in', 'udp_in', type=int, help='UDP listening port', default=5005,show_default=True)
-@click.option('--udp-out', 'udp_out', type=int, help='UDP output port', default=5006,show_default=True)
-@click.option('--ip', 'ip', help='UDP IP to communicate with, default localhost', default="127.0.0.1",show_default=True)
 
 
 ######################################################################################################################
@@ -176,49 +140,40 @@ def main(
     network_pkl: str,
     truncation_psi: float,
     noise_mode: str,
-    spout_name: str,
-    spout_silent: bool,
     udp_in: int,
-    udp_out: int,
-    ip: str,
 ):
 
 
     now_gen_par = gen_par(network_pkl, truncation_psi, noise_mode)
-    my_spout_pars = spout_pars(spout_name, spout_silent )
 
     q = mp.Queue(1)
-    u = mp.Queue(1)
     
-    #gp = mp.Process(target=gen_proc, args=(q, now_gen_par, my_spout_pars))
-    up = mp.Process(target=udp_ops, args=(q, now_gen_par, ip, udp_in, udp_out))
+    up = mp.Process(target=udp_ops, args=(q, now_gen_par, udp_in))
     up.daemon = True
     up.start()
 
-    #NETWORK
     print('Loading networks from "%s"...' % now_gen_par.model)
     device = torch.device('cuda')
     with dnnlib.util.open_url(now_gen_par.model) as f:
-        G = legacy.load_network_pkl(f)['G_ema'].to(device) # type: ignore
+        G = legacy.load_network_pkl(f)['G_ema'].to(device)
+        
+    with torch.no_grad(): #TORCH NOGRAD SHOULD SPEED THINGS UP
+        z = torch.from_numpy(np.random.RandomState(now_gen_par.seed).randn(1, G.z_dim)).to(device)
+        oldz = z
+        w_samples = G.mapping(oldz, None,  truncation_psi=now_gen_par.truncation_psi)
+        oldw_samples = w_samples
 
-    oldz = torch.from_numpy(np.random.RandomState(now_gen_par.seed).randn(1, G.z_dim)).to(device)
-    oldw_samples = G.mapping(oldz, None,  truncation_psi=now_gen_par.truncation_psi)
-
-    #Generate a first image so we can properly initialize the shared texture
-    w_samples = G.mapping(oldz, None,  truncation_psi=now_gen_par.truncation_psi)
-    img = G.synthesis(w_samples, noise_mode=now_gen_par.noise_mode)
-    img = (img[0].permute( 1, 2, 0) * 0.5 + 0.5)
-    # synth img TENSOR SIZE IS: torch.Size([1, 3, 1024, 1024])
-    alpha = torch.ones(1024, 1024, 1).to(device)
-    img = torch.cat((img, alpha), 2)
-    #init ouput texture
+        #Generate a first image so we can properly initialize the shared texture
+        img = G.synthesis(w_samples, noise_mode=now_gen_par.noise_mode).contiguous().cuda(non_blocking=pin_memory)
+        img = (img[0].permute( 1, 2, 0) +0.5).clamp(0, 1).to(dtype=torch.float)
+        # synth img TENSOR SIZE IS: torch.Size([1, 3, 1024, 1024])
+        alpha = torch.full((1024, 1024, 1), 1.0, dtype = torch.float).cuda(non_blocking=pin_memory).to(device)
+        img = torch.cat((img, alpha), 2).contiguous()
+        #init ouput texture
     outtex = gfx2cuda.texture(img)
 
     print("Network and sharedtexture initialized!")
-
-    sp = mp.Process(target=spout_proc, args=(outtex.ipc_handle, my_spout_pars, u, device))
-    sp.daemon = True
-    sp.start()
+    print("HANDLE = {}".format(outtex.ipc_handle))
 
     elaps = 0
     while True:
@@ -231,30 +186,25 @@ def main(
             print("EXITING")
             exit()
 
-        print('Seed {} - FPS {}'.format(now_gen_par.seed, elaps))
-        z = torch.from_numpy(np.random.RandomState(now_gen_par.seed).randn(1, G.z_dim)).to(device)
-        # z TENSOR SIZE IS: torch.Size([1, 512])
-        print("Z INFO----------------------------------------------------------")
-        info(z)
-        if now_gen_par.z_int != 0:  
-            z = ((z * now_gen_par.z_int) + (oldz * (1 - now_gen_par.z_int)))
-        oldz = z
-
-        w_samples = G.mapping(z, None,  truncation_psi=now_gen_par.truncation_psi)
-        if now_gen_par.w_int != 0:
-            w_samples = ((w_samples * now_gen_par.w_int) + (oldw_samples * (1 - now_gen_par.w_int)))
-        oldw_samples = w_samples
-        
-        #img = G(z, label, truncation_psi=now_gen_par.truncation_psi, noise_mode=now_gen_par.noise_mode)
-        img = G.synthesis(w_samples, noise_mode=now_gen_par.noise_mode)
-        # synth img TENSOR SIZE IS: torch.Size([1, 3, 1024, 1024])
-        img = (img[0].permute( 1, 2, 0) * 0.5 + 0.5)
-        img = torch.cat((img, alpha), 2)
+        with torch.no_grad(): #TORCH NOGRAD SHOULD SPEED THINGS UP
+            z = torch.from_numpy(np.random.RandomState(now_gen_par.seed).randn(1, G.z_dim)).to(device)
+            if now_gen_par.z_int != 0:  
+                z = ((z * now_gen_par.z_int) + (oldz * (1 - now_gen_par.z_int)))
+            oldz = z
+            w_samples = G.mapping(z, None,  truncation_psi=now_gen_par.truncation_psi)
+            del z
+            if now_gen_par.w_int != 0:
+                w_samples = ((w_samples * now_gen_par.w_int) + (oldw_samples * (1 - now_gen_par.w_int)))
+            oldw_samples = w_samples
+            img = G.synthesis(w_samples, noise_mode=now_gen_par.noise_mode).contiguous().cuda(non_blocking=pin_memory)
+            del w_samples
+            img = (img[0].permute( 1, 2, 0) +0.5).clamp(0, 1).to(dtype=torch.float)
+            img = torch.cat((img, alpha), 2).contiguous()
         with outtex:
             outtex.copy_from(img)
-        u.put(True)
-
+        del img
         elaps = 1/(time.perf_counter() - t0)
+        print('Seed {} - FPS {} - HANDLE {}'.format(now_gen_par.seed, elaps, outtex.ipc_handle))
 
 #----------------------------------------------------------------------------
 

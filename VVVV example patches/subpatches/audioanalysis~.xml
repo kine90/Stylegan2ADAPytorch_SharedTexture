@@ -127,7 +127,7 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Input" slicecount="1" values="0.55" visible="1">
+   <PIN pinname="Input" slicecount="1" visible="1" values="0.55">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="9" systemname="IOBox (Value Advanced)">
@@ -325,6 +325,8 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Source Minimum|">
    </PIN>
+   <PIN pinname="Y Input Value" slicecount="11" values="0.4,0,0,0,0,0,0,0,0,0,0">
+   </PIN>
    </NODE>
    <NODE systemname="Map (Value)" nodename="Map (Value)" componentmode="Hidden" id="17">
    <BOUNDS type="Node" left="4220" top="6604" width="100" height="100">
@@ -357,13 +359,13 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Source Maximum|">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="11" values="1,0.73,200,100,500,1,80,500,250,20000,2000">
+   <PIN pinname="Y Input Value" slicecount="11" values="0.61,0.73,200,100,500,1,80,500,250,20000,2000">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="19" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="10836" top="6412" width="1040" height="3424">
+   <BOUNDS type="Box" left="10668" top="6996" width="1040" height="3424">
    </BOUNDS>
-   <BOUNDS type="Node" left="10836" top="6412" width="0" height="0">
+   <BOUNDS type="Node" left="10668" top="6996" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -1033,7 +1035,7 @@
    </PIN>
    </NODE>
    <NODE systemname="S (Value)" nodename="S (Value)" componentmode="Hidden" id="63">
-   <BOUNDS type="Node" left="13616" top="6792" width="100" height="100">
+   <BOUNDS type="Node" left="13672" top="7904" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input Value" visible="1">
    </PIN>

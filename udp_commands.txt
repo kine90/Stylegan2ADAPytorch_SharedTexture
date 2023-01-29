@@ -1,0 +1,107 @@
+UDP COMMANDS SHOULD BE FORMATTED AS UTF-8 STRINGS. NUMBERS MUST BE INTEGRERS
+___________________________________
+Commands for "generate_receiveZ_v2"
+------------------------------------
+
+TRONCATIPN PSI (Reccomended values 1.0 - 2)
+    trunc_{(VALUE + 5) * 200}
+
+    This parameter comes from stylegan 2 code. It sort of defines how "weird" generated pictures will be.
+    #EXAMPLE
+    To set value 1.2 send the following string
+    "trunc_1240"
+
+W INTERPOLATION
+    wint_{VALUE * 2000}
+
+    This is a float in range 0 - 1, defines how much the new w_samples will be blended with the previous one
+    #EXAMPLE
+        To set value 0.25 send the following string
+        "wint_500"
+
+AMPLITUDE (Should work around 3, but feel free to experiment)
+    amplitude_{VALUE}
+
+    Defines the scale to apply when converting the latent from spout to float noise
+    #EXAMPLE
+        "amplitude_5"
+
+NOISEMODE
+    noisemode_{SELECTION AS INT}
+
+    Possible values:
+        0 - Constant
+        1 - Random
+        2 - None
+    This par. comes from Stylegan.
+    #EXAMPLE
+        To set Random, send:
+        "noisemode_1"
+
+
+TERMINATE
+    terminate_1
+
+    Nicely terminates python processes.
+    #EXAMPLE
+        "terminate_1"
+
+
+___________________________________
+Commands for "generate_UDPsout_v3"
+------------------------------------
+
+SEED
+    seed_{VALUE}
+
+    Defines the random seed for the next latent
+    #EXAMPLE
+        To generate image for seed 1472, send
+        "seed_1472"
+
+TRONCATIPN PSI (Reccomended values 1.0 - 2)
+    trunc_{(VALUE + 5) * 200}
+
+    This parameters comes from stylegan 2 code. It sort of defines how "weird" generated pictures will be.
+    #EXAMPLE
+    To set value 1.2 send the following string
+    "trunc_1240"
+
+Z INTERPOLATION
+    zint_{VALUE * 2000}
+
+    This is a float in range 0 - 1, defines how much the new generation seed will be blended with the previous one
+    #EXAMPLE
+        To set value 0.25 send the following string
+        "zint_500"
+
+W INTERPOLATION
+    wint_{VALUE * 2000}
+
+    This is a float in range 0 - 1, defines how much the new w_samples will be blended with the previous one
+    #EXAMPLE
+        To set value 0.25 send the following string
+        "wint_500"
+
+
+NOISEMODE
+    noisemode_{SELECTION AS INT}
+
+    Possible values:
+        0 - Constant
+        1 - Random
+        2 - None
+    This par. comes from Stylegan.
+    #EXAMPLE
+        To set Random, send:
+        "noisemode_1"
+
+
+TERMINATE
+    terminate_1
+
+    Nicely terminates python processes.
+    #EXAMPLE
+        "terminate_1"
+
+
