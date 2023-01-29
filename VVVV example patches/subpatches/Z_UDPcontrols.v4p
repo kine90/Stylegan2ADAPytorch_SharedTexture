@@ -1,9 +1,9 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50beta42.dtd" >
    <PATCH nodename="D:\GitHub\Stylegan2ADAPytorch_SharedTexture\VVVV example patches\subpatches\Z_UDPcontrols.v4p" systemname="Z_UDPcontrols" filename="D:\GitHub\Stylegan2ADAPytorch_SharedTexture\VVVV example patches\subpatches\Z_UDPcontrols.v4p" bgcolor="13290214" scrollx="24" scrolly="408">
    <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="0">
-   <BOUNDS type="Node" left="1708" top="4092" width="100" height="100">
+   <BOUNDS type="Node" left="1076" top="3908" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="1708" top="4092" width="1352" height="1352">
+   <BOUNDS type="Box" left="1076" top="3908" width="1352" height="1352">
    </BOUNDS>
    <PIN pinname="Rows" slicecount="1" values="5">
    </PIN>
@@ -139,6 +139,8 @@
    </PIN>
    <PIN pinname="Input 5" visible="1">
    </PIN>
+   <PIN pinname="Input 6" visible="1" slicecount="1" values="2147491778">
+   </PIN>
    </NODE>
    <NODE systemname="AsString (Value)" nodename="AsString (Value)" componentmode="Hidden" id="9">
    <BOUNDS type="Node" left="3276" top="5212" width="100" height="100">
@@ -263,7 +265,7 @@
    </PIN>
    <PIN pinname="Show Slider" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.07">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.74">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -356,7 +358,7 @@
    </LINK>
    <LINK srcnodeid="14" srcpinname="Output" dstnodeid="15" dstpinname="Input">
    </LINK>
-   <BOUNDS type="Window" left="13728" top="5376" width="7160" height="9840">
+   <BOUNDS type="Window" left="-10272" top="11280" width="7160" height="9840">
    </BOUNDS>
    <PACK Name="dx11" Version="1.3.1">
    </PACK>
@@ -387,9 +389,9 @@
    <LINK srcnodeid="23" srcpinname="Output" dstnodeid="14" dstpinname="Set">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="24">
-   <BOUNDS type="Box" left="5432" top="2984" width="480" height="480">
+   <BOUNDS type="Box" left="5256" top="3040" width="480" height="480">
    </BOUNDS>
-   <BOUNDS type="Node" left="5432" top="2984" width="0" height="0">
+   <BOUNDS type="Node" left="5256" top="3040" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
    </PIN>
@@ -409,7 +411,7 @@
    </PIN>
    </NODE>
    <NODE systemname="OnOpen (VVVV)" nodename="OnOpen (VVVV)" componentmode="Hidden" id="25">
-   <BOUNDS type="Node" left="5464" top="3664" width="100" height="100">
+   <BOUNDS type="Node" left="5264" top="3688" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Bang" visible="1">
    </PIN>
@@ -419,9 +421,9 @@
    <LINK srcnodeid="24" srcpinname="Y Output Value" dstnodeid="25" dstpinname="Simulate">
    </LINK>
    <NODE systemname="Cons (Spreads)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (Spreads)" componentmode="Hidden" id="28">
-   <BOUNDS type="Node" left="5232" top="6000" width="100" height="100">
+   <BOUNDS type="Node" left="5248" top="6080" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="5232" top="6000" width="1600" height="1600">
+   <BOUNDS type="Box" left="5248" top="6080" width="1600" height="1600">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1" slicecount="4" values="0,0,0,0">
    </PIN>
@@ -435,11 +437,15 @@
    </PIN>
    <PIN pinname="Input 4" visible="1">
    </PIN>
+   <PIN pinname="Input 5" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Input 6" visible="1" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <LINK srcnodeid="28" srcpinname="Output" dstnodeid="23" dstpinname="Input 2">
    </LINK>
    <NODE systemname="Delay (Animation)" nodename="Delay (Animation)" componentmode="Hidden" id="29">
-   <BOUNDS type="Node" left="5416" top="4120" width="100" height="100">
+   <BOUNDS type="Node" left="5248" top="4096" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Time" slicecount="1" values="0.2">
    </PIN>
@@ -453,7 +459,7 @@
    <LINK srcnodeid="29" srcpinname="Output" dstnodeid="28" dstpinname="Input 1">
    </LINK>
    <NODE systemname="Delay (Animation)" nodename="Delay (Animation)" componentmode="Hidden" id="30">
-   <BOUNDS type="Node" left="5472" top="4624" width="100" height="100">
+   <BOUNDS type="Node" left="5416" top="4616" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Time" slicecount="1" values="0.2">
    </PIN>
@@ -481,7 +487,7 @@
    <LINK srcnodeid="31" srcpinname="Output" dstnodeid="28" dstpinname="Input 3">
    </LINK>
    <NODE systemname="Delay (Animation)" nodename="Delay (Animation)" componentmode="Hidden" id="32">
-   <BOUNDS type="Node" left="5664" top="5456" width="100" height="100">
+   <BOUNDS type="Node" left="5720" top="5392" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Time" slicecount="1" values="0.2">
    </PIN>
