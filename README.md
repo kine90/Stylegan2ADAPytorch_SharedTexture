@@ -10,8 +10,9 @@ First of all, you should uninstall completely ALL previous NVIDIA CUDA versions.
 ## Installation
 
 First, you need a working CUDA Stylegan 2 - ADA Pytorch
-This is the trickies part
+This is the trickiest part
 
+`
 Uninstall all previous NVIDIA CUDA
 Go to your environment setup and remove ALL paths, CUDA_HOME, CUDA_PATH etc. cleanly
 Delete all files as the uninstallation program left them there !!!
@@ -33,7 +34,7 @@ Cuda compilation tools, release 11.1, V11.1.74
 Build cuda_11.1.relgpu_drvr455TC455_06.29069683_0
 Hope that I did not miss any step. Otherwise, it should work. If it DOES NOT, Ctrl-C immediately and see if the path that is used is 11.0 or 11.1 or whatever earlier version.
 P/S: on Windows you may hit a problem with OMP (Initializing libiomp5.dylib, but found libiomp5.dylib already initialized), simply ignore them by adding: os.environ['KMP_DUPLICATE_LIB_OK']='True' to your train.py and training_loop.py
-
+`
 
 Next, set up an environment using the file you find into folder "conda" and activate it.
 
@@ -45,7 +46,7 @@ https://nvlabs-fi-cdn.nvidia.com/stylegan2-ada-pytorch/pretrained/
 
 There are two main working versions:
 
-## generate_UDP_v3.py
+### generate_UDP_v3.py
 
 This version expects to receive random seed and interpolation values from udp and sends back the generated image as shared texture.
 For a list of udp commands check udp_commands.txt
@@ -55,7 +56,7 @@ From w_samples an image is generated.
 The code blends z and w_using an interpolation factor wich is set trough udp.
 Both are useful to smooth the transition of a frame into the previous one. Z interpolation tends to add variety to the transition, while W interpolation results in a more straight transition from image A to B. I usually go for a mix of the two.
 
-## generate_receiveZ_v3.py
+### generate_receiveZ_v3.py
 
 This version expects to receive the Z Tensor as a spout texture with resolution 512x1. Other parameters can be controlled trough UDP.
 For a list of udp commands check udp_commands.txt
