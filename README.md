@@ -86,4 +86,4 @@ There is a folder with VVVV example patches. You need to install DX11 pack and S
 ## Performances  
 
 On my MSI GT73VR (Nvidia GTX1080) I can get about 8fps.  
-Indeed I am always hoping to have the code run fuster, any advice is appreciated!   
+I am always hoping to have the code run fuster, any advice is appreciated!   
