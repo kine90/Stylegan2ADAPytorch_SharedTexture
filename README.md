@@ -33,7 +33,8 @@ First, you need a working setup for CUDA Stylegan 2 - ADA Pytorch.
     Build cuda_11.1.relgpu_drvr455TC455_06.29069683_0
     `
   
-**Done!**  
+**Done!**   
+
 If it **DOES NOT** work, Ctrl-C immediately and see if the path that is used is 11.0 or 11.1 or whatever earlier version.  
 
 P/S: on Windows you may hit a problem with OMP (Initializing libiomp5.dylib, but found libiomp5.dylib already initialized), simply ignore them by adding: os.environ['KMP_DUPLICATE_LIB_OK']='True' to your train.py and training_loop.py
@@ -68,10 +69,21 @@ The code blends w_samples using an interpolation factor wich is set trough udp.
 TO-DO:  
 Fully replace spout with shared texture, which is faster.  
 
-**VVVV beta patches**  
+### CLI  
+
+The only required parameter is `--network path_to\pickle.pkl`  
+To start the programs type (With the proper conda environment active):  
+`python generate_receiveZ_v2.py --network C:\path_to_your_model\psy_lastlast.pkl`  
+or
+`python generate_UDP_v3.py --network C:\path_to_your_model\psy_lastlast.pkl`  
+
+
+### VVVV beta patches  
+
 There is a folder with VVVV example patches. You need to install DX11 pack and Spout plugins.  
 
 
 ## Performances  
+
 On my MSI GT73VR (Nvidia GTX1080) I can get about 8fps.  
-Indeed I am always trying to make the code run fuster, any advice is welcome!   
+Indeed I am always hoping to have the code run fuster, any advice is appreciated!   
