@@ -50,17 +50,17 @@ There are two main working versions:
 
 This version expects to receive random seed and interpolation values from udp and sends back the generated image as shared texture.  
 For a list of udp commands check udp_commands.txt.  
-Tensor z (with shape[1,512]) is generated using gaussian noise with the random seed received from UDP.  
+The tensor z (shape[1,512]) is generated using gaussian noise with the random seed received from UDP.  
 z is then mapped to latent w_samples.  
 From w_samples an image is generated.  
 The code blends z and w_using an interpolation factor wich is set trough udp.  
-Both are useful to smooth the transition of a frame into the previous one. Z interpolation tends to add variety to the transition, while W interpolation results in a more straight transition from image A to B. I usually go for a mix of the two.  
+Both are useful to smooth the transition of a frame into the previous one. Z interpolation tends to add variety to the transition, while W interpolation results in a straighter transition from image A to B. I usually go for a mix of the two.  
 
 ### generate_receiveZ_v3.py  
 
 This version expects to receive the Z Tensor as a spout texture with resolution 512x1. Other parameters can be controlled trough UDP.  
-For a list of udp commands check udp_commands.txt  
-Tensor z is received from Spout. The pixel brightness is converted to float (range 0-1), scaled using the specified sclaed factor, and offset of half of it, as Stylegan expects noise with positive and negative values.  
+For a list of udp commands check udp_commands.txt.  
+After the texture is received from Spout, the pixel brightness value is converted to float (range 0-1), scaled using the specified factor, and offset of half of it, as Stylegan expects noise with positive and negative values.  
 z is then mapped to latent w_samples.  
 From w_samples an image is generated and sent back as shared texture.  
 The code blends w_samples using an interpolation factor wich is set trough udp.  
