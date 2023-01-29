@@ -25,6 +25,7 @@ from Library.Spout import Spout
 import gfx2cuda
 
 torch.set_grad_enabled(False)
+pin_memory = True
 
 ######################################################
 #####################################################
@@ -216,7 +217,7 @@ def main(
 
     print("Network init")
 
-    firstframe = torch.full((1024, 1024, 4), 1.0, dtype = torch.float).to(device)
+    firstframe = torch.full((1024, 1024, 4), 1.0, dtype = torch.float).contiguous().to(device)
     outtex = gfx2cuda.texture(firstframe)
     print("SHARED TEXTURE INIT DONE !!!")
     with outtex:
@@ -233,7 +234,7 @@ def main(
     #GENERATE W_SAMPLES
     w_samples = G.mapping(z, None,  truncation_psi=now_gen_par.truncation_psi)
     oldw_samples = w_samples
-    alpha = torch.full((1024, 1024, 1), 1.0, dtype = torch.float).to(device)
+    alpha = torch.full((1024, 1024, 1), 1.0, dtype = torch.float).cuda(non_blocking=pin_memory).to(device)
 
 
     print("All done! Starting loop...")
@@ -259,15 +260,17 @@ def main(
         z = ((z - 127.5) * ( now_gen_par.amplitude / 127.5) ).to(device, dtype = torch.float)
 
         #GENERATE W_SAMPLES
-        w_samples = G.mapping(z, None,  truncation_psi=now_gen_par.truncation_psi)
-        if now_gen_par.w_int != 0:
-            w_samples = ((w_samples * now_gen_par.w_int) + (oldw_samples * (1 - now_gen_par.w_int)))
-        oldw_samples = w_samples
+        with torch.no_grad():
+            w_samples = G.mapping(z, None,  truncation_psi=now_gen_par.truncation_psi)
+            del z
+            if now_gen_par.w_int != 0:
+                w_samples = ((w_samples * now_gen_par.w_int) + (oldw_samples * (1 - now_gen_par.w_int)))
+            oldw_samples = w_samples
 
-        img = G.synthesis(w_samples, noise_mode=now_gen_par.noise_mode)
-        del w_samples
-        img = (img[0].permute( 1, 2, 0) +0.5).clamp(0, 1).to(dtype=torch.float)
-        img = torch.cat((img, alpha), 2)
+            img = G.synthesis(w_samples, noise_mode=now_gen_par.noise_mode).contiguous().cuda(non_blocking=pin_memory)
+            del w_samples
+            img = (img[0].permute( 1, 2, 0) +0.5).clamp(0, 1).to(dtype=torch.float)
+            img = torch.cat((img, alpha), 2)
 
         with outtex:
             outtex.copy_from(img)
