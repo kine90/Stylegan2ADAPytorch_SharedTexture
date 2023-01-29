@@ -25,13 +25,15 @@ First, you need a working setup for CUDA Stylegan 2 - ADA Pytorch.
 
     The output should be  
 
-    `nvcc: NVIDIA (R) Cuda compiler driver
+    `
+    nvcc: NVIDIA (R) Cuda compiler driver
     Copyright (c) 2005-2020 NVIDIA Corporation
     Built on Tue_Sep_15_19:12:04_Pacific_Daylight_Time_2020
     Cuda compilation tools, release 11.1, V11.1.74
-    Build cuda_11.1.relgpu_drvr455TC455_06.29069683_0`
-
-**Done!**
+    Build cuda_11.1.relgpu_drvr455TC455_06.29069683_0
+    `
+  
+**Done!**  
 If it **DOES NOT** work, Ctrl-C immediately and see if the path that is used is 11.0 or 11.1 or whatever earlier version.  
 
 P/S: on Windows you may hit a problem with OMP (Initializing libiomp5.dylib, but found libiomp5.dylib already initialized), simply ignore them by adding: os.environ['KMP_DUPLICATE_LIB_OK']='True' to your train.py and training_loop.py
