@@ -193,7 +193,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="504" top="3536" width="4968" height="8324">
    </BOUNDS>
-   <BOUNDS type="Window" left="11784" top="224" width="17616" height="10856">
+   <BOUNDS type="Window" left="11784" top="224" width="4216" height="8344">
    </BOUNDS>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
@@ -247,7 +247,7 @@
    <NODE systemname="latentgenerator_16bande" filename="subpatches\latentgenerators\latentgenerator_16bande.v4p" nodename="subpatches\latentgenerators\latentgenerator_16bande.v4p" componentmode="Hidden" id="234">
    <BOUNDS type="Node" left="6312" top="2464" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Window" left="7528" top="320" width="19696" height="14288">
+   <BOUNDS type="Window" left="7528" top="320" width="9960" height="12640">
    </BOUNDS>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
@@ -256,22 +256,4 @@
    </LINK>
    <LINK srcnodeid="230" srcpinname="Texture Out" dstnodeid="47" dstpinname="Input Node">
    </LINK>
-   <NODE id="237" componentmode="Hidden" systemname="audioanalysis" filename="subpatches\audioanalysis.v4p" nodename="..\audioanalysis.v4p">
-   <BOUNDS type="Node" left="3832" top="1128" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="0" top="0" width="18300" height="8636">
-   </BOUNDS>
-   <BOUNDS type="Window" left="10352" top="3240" width="19896" height="12136">
-   </BOUNDS>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="bang out" visible="1">
-   </PIN>
-   <PIN pinname="peak" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Features" visible="1">
-   </PIN>
-   </NODE>
    </PATCH>

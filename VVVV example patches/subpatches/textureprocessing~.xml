@@ -85,7 +85,7 @@
    </PIN>
    <PIN pinname="Texture In" visible="1">
    </PIN>
-   <PIN pinname="Input" slicecount="1" values="0.9">
+   <PIN pinname="Input" slicecount="1" values="0.67">
    </PIN>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
@@ -113,7 +113,7 @@
    </PIN>
    <PIN pinname="Texture In" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Input" slicecount="1" values="0.95">
+   <PIN pinname="Input" slicecount="1" values="0.79">
    </PIN>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
