@@ -72,10 +72,10 @@ Fully replace spout with shared texture, which is faster.
 ### CLI  
 
 The only required parameter is `--network path_to\pickle.pkl`  
-To start the programs type (With the proper conda environment active):  
-`python generate_receiveZ_v2.py --network C:\path_to_your_model\psy_lastlast.pkl`  
-or
-`python generate_UDP_v3.py --network C:\path_to_your_model\psy_lastlast.pkl`  
+To start the programs using Nvidia faces HQ model type (With the proper conda environment active):  
+`python generate_receiveZ_v2.py --network C:\path_to_model\ffhq.pkl`  
+or  
+`python generate_UDP_v3.py --network C:\path_to_model\ffhq.pkl`  
 
 
 ### VVVV beta patches  
