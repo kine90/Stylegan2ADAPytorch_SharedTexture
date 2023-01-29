@@ -1,16 +1,8 @@
-# Spout for Python
-
-Based on https://github.com/spiraltechnica/Spout-for-Python
-
-A modified Spout library using Boost::Python to enable Spout texture sharing using Python.
-This library is for use with Python 3.5 / 3.6 / 3.7 64bit. Now it will automatically define python version and load appropriate file.
-
-First of all, you should uninstall completely ALL previous NVIDIA CUDA versions. I mean completely.
-
 ## Installation
 
-First, you need a working CUDA Stylegan 2 - ADA Pytorch
-This is the trickiest part
+First, you need a working setup for CUDA Stylegan 2 - ADA Pytorch.
+
+**This is the trickiest part.**
 
 
 Uninstall all previous NVIDIA CUDA
