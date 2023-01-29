@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50beta42.dtd" >
-   <PATCH nodename="D:\GitHub\Stylegan2ADAPytorch_SharedTexture\VVVV example patches\udp_2_NOMIDI.v4p" scrollx="0" scrolly="-360" systemname="udp_2_NOMIDI" filename="D:\ML\stylegan2-ada-pytorch_spout\udp_2_NOMIDI.v4p" bgcolor="16749922">
+   <PATCH nodename="D:\GitHub\Stylegan2ADAPytorch_SharedTexture\VVVV example patches\generate_UDP.v4p" scrollx="0" scrolly="-360" systemname="generate_UDP" filename="D:\GitHub\Stylegan2ADAPytorch_SharedTexture\VVVV example patches\generate_UDP.v4p" bgcolor="16749922">
    <BOUNDS type="Window" left="3088" top="440" width="14768" height="16280">
    </BOUNDS>
    <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="0">
@@ -708,7 +708,7 @@
    <PIN pinname="Texture" visible="1">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="123">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="123" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="9392" top="1912" width="1656" height="432">
    </BOUNDS>
    <BOUNDS type="Node" left="9392" top="1912" width="0" height="0">

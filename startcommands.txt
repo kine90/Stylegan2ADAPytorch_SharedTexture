@@ -1,0 +1,13 @@
+activate sg2
+
+python generate_receiveZ_v2.py --network D:\ML\SADA_TORCH_NETS\psy_lastlast.pkl 
+python generate_UDP_v3.py --network D:\ML\SADA_TORCH_NETS\psy_lastlast.pkl
+
+
+python generate_sharedtexture_v1.py --network D:\ML\SADA_TORCH_NETS\psy_lastlast.pkl 
+python generate_sharedtexture_v1.py --network D:\ML\vprlava\Nets\soupclean\network-snapshot-000284.pkl
+python generate_latent.py --network D:\ML\SADA_TORCH_NETS\NeonSoup4_001100.pkl
+python generate_latent.py --network D:\ML\SADA_TORCH_NETS\NeonSoup4_001772.pkl
+python generate_latent.py --network D:\ML\SADA_TORCH_NETS\NeonSoup4_002780.pkl
+python generate_sharedtexture_v1.py --network D:\ML\SADA_TORCH_NETS\NeonSoup4_002780.pkl
+python generate_sharedtexture_v2.py --network D:\ML\SADA_TORCH_NETS\psy_lastlast.pkl
