@@ -67,3 +67,11 @@ The code blends w_samples using an interpolation factor wich is set trough udp.
 
 TO-DO:  
 Fully replace spout with shared texture, which is faster.  
+
+**VVVV beta patches**  
+There is a folder with VVVV example patches. You need to install DX11 pack and Spout plugins.  
+
+
+## Performances  
+On my MSI GT73VR (Nvidia GTX1080) I can get about 8fps.  
+Indeed I am always trying to make the code run fuster, any advice is welcome!   
