@@ -23,7 +23,7 @@ First, you need a working setup for CUDA Stylegan 2 - ADA Pytorch.
 
 - Check `nvcc --version`
 
-    - The output should be
+    The output should be  
 
     `nvcc: NVIDIA (R) Cuda compiler driver
     Copyright (c) 2005-2020 NVIDIA Corporation
@@ -32,36 +32,36 @@ First, you need a working setup for CUDA Stylegan 2 - ADA Pytorch.
     Build cuda_11.1.relgpu_drvr455TC455_06.29069683_0`
 
 **Done!**
-If it **DOES NOT** work, Ctrl-C immediately and see if the path that is used is 11.0 or 11.1 or whatever earlier version.
+If it **DOES NOT** work, Ctrl-C immediately and see if the path that is used is 11.0 or 11.1 or whatever earlier version.  
 
 P/S: on Windows you may hit a problem with OMP (Initializing libiomp5.dylib, but found libiomp5.dylib already initialized), simply ignore them by adding: os.environ['KMP_DUPLICATE_LIB_OK']='True' to your train.py and training_loop.py
 
-**Last, find a stylegan 2-ada pytorch pickle, or download one from Nvidia´s repo.**
+**Last, find a stylegan 2-ada pytorch pickle, or download one from Nvidia´s repo.**  
 https://nvlabs-fi-cdn.nvidia.com/stylegan2-ada-pytorch/pretrained/
 
 
-## Usage
+## Usage  
 
-There are two main working versions:
+There are two main working versions:  
 
-### generate_UDP_v3.py
+### generate_UDP_v3.py  
 
-This version expects to receive random seed and interpolation values from udp and sends back the generated image as shared texture.
-For a list of udp commands check udp_commands.txt
-Tensor z (with shape[1,512]) is generated using gaussian noise with the random seed received from UDP.
-z is then mapped to latent w_samples.
-From w_samples an image is generated.
-The code blends z and w_using an interpolation factor wich is set trough udp.
-Both are useful to smooth the transition of a frame into the previous one. Z interpolation tends to add variety to the transition, while W interpolation results in a more straight transition from image A to B. I usually go for a mix of the two.
+This version expects to receive random seed and interpolation values from udp and sends back the generated image as shared texture.  
+For a list of udp commands check udp_commands.txt.  
+Tensor z (with shape[1,512]) is generated using gaussian noise with the random seed received from UDP.  
+z is then mapped to latent w_samples.  
+From w_samples an image is generated.  
+The code blends z and w_using an interpolation factor wich is set trough udp.  
+Both are useful to smooth the transition of a frame into the previous one. Z interpolation tends to add variety to the transition, while W interpolation results in a more straight transition from image A to B. I usually go for a mix of the two.  
 
-### generate_receiveZ_v3.py
+### generate_receiveZ_v3.py  
 
-This version expects to receive the Z Tensor as a spout texture with resolution 512x1. Other parameters can be controlled trough UDP.
-For a list of udp commands check udp_commands.txt
-Tensor z is received from Spout. The pixel brightness is converted to float (range 0-1), scaled using the specified sclaed factor, and offset of half of it, as Stylegan expects noise with positive and negative values.
-z is then mapped to latent w_samples.
-From w_samples an image is generated and sent back as shared texture.
-The code blends w_samples using an interpolation factor wich is set trough udp.
+This version expects to receive the Z Tensor as a spout texture with resolution 512x1. Other parameters can be controlled trough UDP.  
+For a list of udp commands check udp_commands.txt  
+Tensor z is received from Spout. The pixel brightness is converted to float (range 0-1), scaled using the specified sclaed factor, and offset of half of it, as Stylegan expects noise with positive and negative values.  
+z is then mapped to latent w_samples.  
+From w_samples an image is generated and sent back as shared texture.  
+The code blends w_samples using an interpolation factor wich is set trough udp.  
 
-TO-DO:
-Fully replace spout with shared texture, which is faster.
+TO-DO:  
+Fully replace spout with shared texture, which is faster.  
