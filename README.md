@@ -33,6 +33,9 @@ Check your PATH CUDA_HOME CUDA_PATH pointing to exactly the 11.1 path
 Next, set up an environment using the file you find into folder "conda" and activate it.
 
 Check `nvcc --version`
+
+The output should be
+
 `nvcc: NVIDIA (R) Cuda compiler driver
 Copyright (c) 2005-2020 NVIDIA Corporation
 Built on Tue_Sep_15_19:12:04_Pacific_Daylight_Time_2020
