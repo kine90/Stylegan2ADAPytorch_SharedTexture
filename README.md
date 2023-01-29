@@ -5,34 +5,31 @@ First, you need a working setup for CUDA Stylegan 2 - ADA Pytorch.
 **This is the trickiest part.**
 
 
-Uninstall all previous NVIDIA CUDA
+- Uninstall all previous NVIDIA CUDA
 
-Go to your environment setup and remove ALL paths, CUDA_HOME, CUDA_PATH etc. cleanly
+- Go to your environment setup and remove ALL paths, CUDA_HOME, CUDA_PATH etc. cleanly
 
-Delete all files as the uninstallation program left them there !!!
+- Delete all files as the uninstallation program left them there !!!
 
-Install Visual Studio 2019
+- Install Visual Studio 2019
 
-Add this to your PATH:
-`
-C:\Program Files (x86)\MicrosoftVisualStudio\2019\Community\VC\Auxiliary\Build\vcvarsx86_amd64.bat
-`
+- Add this to your PATH: `C:\Program Files (x86)\MicrosoftVisualStudio\2019\Community\VC\Auxiliary\Build\vcvarsx86_amd64.bat`
 
-Clean install NVIDIA CUDA 11.1
+- Clean install NVIDIA CUDA 11.1
 
-Check your PATH CUDA_HOME CUDA_PATH pointing to exactly the 11.1 path
+- Check your PATH CUDA_HOME CUDA_PATH pointing to exactly the 11.1 path
 
-Next, set up an environment using the file you find into folder "conda" and activate it.
+- Next, set up an environment using the file you find into folder "conda" and activate it.
 
-Check `nvcc --version`
+- Check `nvcc --version`
 
-The output should be
+    - The output should be
 
-`nvcc: NVIDIA (R) Cuda compiler driver
-Copyright (c) 2005-2020 NVIDIA Corporation
-Built on Tue_Sep_15_19:12:04_Pacific_Daylight_Time_2020
-Cuda compilation tools, release 11.1, V11.1.74
-Build cuda_11.1.relgpu_drvr455TC455_06.29069683_0`
+    `nvcc: NVIDIA (R) Cuda compiler driver
+    Copyright (c) 2005-2020 NVIDIA Corporation
+    Built on Tue_Sep_15_19:12:04_Pacific_Daylight_Time_2020
+    Cuda compilation tools, release 11.1, V11.1.74
+    Build cuda_11.1.relgpu_drvr455TC455_06.29069683_0`
 
 Hope that I did not miss any step. Otherwise, it should work.
 
