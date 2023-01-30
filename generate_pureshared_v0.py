@@ -19,9 +19,6 @@ import torch
 import socket
 import legacy
 import time
-import pygame
-from pygame.locals import *
-from Library.Spout import Spout
 import gfx2cuda
 
 torch.set_grad_enabled(False)
@@ -54,11 +51,6 @@ class gen_par:
         self.handle = input_handle
         self.amplitude = 4.0
 
-class spout_pars:
-    def __init__(self, name, silent):
-
-        self.name = name
-        self.silent = silent
 
 #----------------------------------------------------------------------------
 
@@ -147,7 +139,6 @@ def main(
 ):
     # LOAD PARS TO DATASTRUCTURES
     now_gen_par = gen_par(network_pkl, 1.0, noise_mode, handle)
-    now_spout_pars = spout_pars(spout_name, spout_silent)
     #INIT mpQUEUE FOR UDP INPUTS TRANSFER
     q = mp.Queue(1)
     
@@ -169,7 +160,7 @@ def main(
     firstframe = torch.full((1024, 1024, 4), 1.0, dtype = torch.float).contiguous().to(device)
     outtex = gfx2cuda.texture(firstframe)
     print("Shared tex init done")
-    with outtex:
+    with outtex as ptr:
         outtex.copy_from(firstframe)
     print("HANDLE = {}".format(outtex.ipc_handle))
     del firstframe
@@ -182,15 +173,13 @@ def main(
         print("Failed to acess input texture on specified handle")
         exit()
 
-    z = torch.full((1, 512), 1.0, dtype = torch.float).contiguous()
+    inputz = torch.full((1, 512, 4), 0, dtype = torch.float ).cuda(non_blocking=pin_memory).contiguous().cuda()
     with inputtex:
-        inputtex.copy_to(z)
+        inputtex.copy_to(inputz)
     print("First tensor received!")
-    print(z.shape())
-    print(z)
+
     #RECEIVE FIRST SPOUT LATENT
-    #z = torch.reshape((torch.from_numpy(spoutrcv.receive())[:,:,:1]), (1,512))
-    #z = ((z - 127.5) * ( now_gen_par.amplitude / 127.5) ).to(device, dtype = torch.float)
+    z = (torch.reshape((inputz[:,:,:1]),(1 ,512)) - 0.5)*now_gen_par.amplitude
     print("Spout init done, first latent received")
 
     #GENERATE FIRST W_SAMPLES
@@ -199,7 +188,7 @@ def main(
     oldw_samples = w_samples
 
     #GENERATE ALPHA CHANNEL LATENT AND STORE IT TO GPU FOR LATER
-    alpha = torch.full((1024, 1024, 1), 1.0, dtype = torch.float).cuda(non_blocking=pin_memory).to(device)
+    alpha = torch.full((1024, 1024, 1), 1.0, dtype = torch.float).cuda(non_blocking=pin_memory).contiguous().to(device)
 
     print("All done! Entering loop...")
 
@@ -221,10 +210,11 @@ def main(
             exit()
 
         # RECEIVE LATENT SPOUT TEXTURE
-        z = torch.reshape((torch.from_numpy(spoutrcv.receive())[:,:,:1]), (1,512))
-        z = ((z - 127.5) * ( now_gen_par.amplitude / 127.5) ).to(device, dtype = torch.float)
-
+        with inputtex:
+            inputtex.copy_to(inputz)
+        
         with torch.no_grad(): #TORCH NOGRAD SHOULD SPEED THINGS UP
+            z = (torch.reshape((inputz[:,:,:1]),(1 ,512))-0.5)*now_gen_par.amplitude
             #GENERATE W_SAMPLES
             w_samples = G.mapping(z, None,  truncation_psi=now_gen_par.truncation_psi)
             del z

@@ -76,7 +76,7 @@
    </LINK>
    <LINK srcnodeid="2" srcpinname="Buffers" dstnodeid="0" dstpinname="Texture">
    </LINK>
-   <BOUNDS type="Window" left="-17232" top="13736" width="6600" height="5472">
+   <BOUNDS type="Window" left="7448" top="7800" width="6600" height="5472">
    </BOUNDS>
    <NODE systemname="Kalle (VVVV)" nodename="Kalle (VVVV)" componentmode="Hidden" id="6">
    <BOUNDS type="Node" left="280" top="432" width="100" height="100">
@@ -127,33 +127,5 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="10" srcpinname="Output String" dstnodeid="0" dstpinname="Sender Name">
-   </LINK>
-   <NODE systemname="AsSharedTexture (DX11.Texture 2d)" filename="%VVVV%\packs\dx11\nodes\plugins\base\VVVV.DX11.Nodes.dll" nodename="AsSharedTexture (DX11.Texture 2d)" componentmode="Hidden" id="11">
-   <BOUNDS type="Node" left="4168" top="2680" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="4168" top="2680" width="1600" height="1600">
-   </BOUNDS>
-   <PIN pinname="Texture In" visible="1">
-   </PIN>
-   <PIN pinname="Pointer" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="2" srcpinname="Buffers" dstnodeid="11" dstpinname="Texture In">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="12">
-   <BOUNDS type="Box" left="4936" top="3344" width="696" height="208">
-   </BOUNDS>
-   <BOUNDS type="Node" left="4936" top="3344" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Pointer">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="11" srcpinname="Pointer" dstnodeid="12" dstpinname="Y Input Value">
    </LINK>
    </PATCH>
