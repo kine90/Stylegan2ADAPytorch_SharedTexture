@@ -299,4 +299,4 @@ __pycache__/
 *.xsd.cs
 .DS_Store
 .DS_Store
-gfx2cuda/
+#gfx2cuda/
