@@ -1,0 +1,3 @@
+[submodule "gfx2cuda"]
+	path = gfx2cuda
+	url = https://github.com/SvenDH/gfx2cuda.git
