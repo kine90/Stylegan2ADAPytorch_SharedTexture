@@ -27,7 +27,7 @@
    </PIN>
    <PIN pinname="Index" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Show Alpha" slicecount="1" values="1">
+   <PIN pinname="Show Alpha" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="121">
@@ -91,17 +91,21 @@
    </PIN>
    <PIN pinname="Octaves" visible="1">
    </PIN>
-   <PIN pinname="Fractal Type" slicecount="1" values="Noise">
+   <PIN pinname="Fractal Type" slicecount="1" values="Turbulence">
    </PIN>
    <PIN pinname="Default SizeXY" visible="1" slicecount="2" values="512,1">
    </PIN>
    <PIN pinname="Use Default Size" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Worley Cell Function" slicecount="1" values="F1">
+   <PIN pinname="Worley Cell Function" slicecount="1" values="Average">
    </PIN>
    <PIN pinname="Preserve On Disable" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Do Save" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Worley Distance Metric" slicecount="1" values="EuclideanSquared">
+   </PIN>
+   <PIN pinname="Technique" slicecount="1" values="WorleyNoise">
    </PIN>
    </NODE>
    <LINK srcnodeid="124" srcpinname="Output" dstnodeid="122" dstpinname="Go To Position">
@@ -127,7 +131,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="4848" top="7416" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="5">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1.19">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -143,7 +147,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="5680" top="7440" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.76">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.61">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -159,7 +163,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="6600" top="7440" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="14">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="3">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -181,7 +185,7 @@
    </PIN>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
-   <PIN pinname="Input" slicecount="1" visible="1" values="0.17">
+   <PIN pinname="Input" slicecount="1" visible="1" values="0.39">
    </PIN>
    <PIN pinname="Technique" slicecount="1" values="Fade">
    </PIN>
@@ -229,7 +233,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="5344" top="9328" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.44">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -245,7 +249,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="6424" top="9288" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="2.78">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -305,7 +309,7 @@
    <NODE systemname="Counter (Animation)" nodename="Counter (Animation)" componentmode="Hidden" id="150">
    <BOUNDS type="Node" left="5416" top="4976" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Maximum" slicecount="1" values="8">
+   <PIN pinname="Maximum" slicecount="1" values="4">
    </PIN>
    <PIN pinname="Up" visible="1" slicecount="1" values="0">
    </PIN>
@@ -317,9 +321,9 @@
    <LINK srcnodeid="150" srcpinname="Overflow" dstnodeid="124" dstpinname="Set">
    </LINK>
    <NODE systemname="FrameDelay (DX11.Texture 2d)" filename="%VVVV%\packs\dx11\nodes\plugins\base\VVVV.DX11.Nodes.dll" nodename="FrameDelay (DX11.Texture 2d)" componentmode="Hidden" id="151">
-   <BOUNDS type="Node" left="5072" top="10168" width="100" height="100">
+   <BOUNDS type="Node" left="5600" top="10272" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="5072" top="10168" width="1600" height="1600">
+   <BOUNDS type="Box" left="5600" top="10272" width="1600" height="1600">
    </BOUNDS>
    </NODE>
    <LINK srcnodeid="144" srcpinname="Texture Out" dstnodeid="151" dstpinname="Texture In">
@@ -363,7 +367,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="7376" top="10384" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="250">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="50">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -473,7 +477,7 @@
    </PIN>
    </NODE>
    <NODE systemname="S+H (Animation)" nodename="S+H (Animation)" componentmode="Hidden" id="165">
-   <BOUNDS type="Node" left="9280" top="8776" width="100" height="100">
+   <BOUNDS type="Node" left="9384" top="8856" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -541,7 +545,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="4896" top="11496" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.17">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -559,11 +563,15 @@
    </BOUNDS>
    <PIN pinname="Change" visible="1">
    </PIN>
+   <PIN pinname="Period" slicecount="1" values="0.5">
+   </PIN>
    </NODE>
    <LINK srcnodeid="180" srcpinname="Change" dstnodeid="150" dstpinname="Up">
    </LINK>
    <LINK srcnodeid="132" srcpinname="Texture Out" dstnodeid="27" dstpinname="Texture In">
    </LINK>
    <LINK srcnodeid="132" srcpinname="Texture Out" dstnodeid="21" dstpinname="Input Node">
+   </LINK>
+   <LINK srcnodeid="180" srcpinname="Change" dstnodeid="165" dstpinname="Set">
    </LINK>
    </PATCH>

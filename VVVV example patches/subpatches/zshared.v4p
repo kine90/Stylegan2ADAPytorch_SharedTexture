@@ -1,0 +1,65 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50beta42.dtd" >
+   <PATCH nodename="D:\GitHub\Stylegan2ADAPytorch_SharedTexture\VVVV example patches\subpatches\zshared.v4p" bgcolor="16080264" systemname="zshared" filename="D:\GitHub\Stylegan2ADAPytorch_SharedTexture\VVVV example patches\subpatches\zshared.v4p" scrollx="0" scrolly="-360">
+   <NODE id="5" systemname="IOBox (Node)" componentmode="InABox" nodename="IOBox (Node)">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Texture">
+   </PIN>
+   <BOUNDS type="Box" left="2380" top="404" width="750" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2380" top="404" width="750" height="240">
+   </BOUNDS>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   </NODE>
+   <BOUNDS type="Window" left="7456" top="7800" width="6592" height="5472">
+   </BOUNDS>
+   <NODE systemname="Kalle (VVVV)" nodename="Kalle (VVVV)" componentmode="Hidden" id="6">
+   <BOUNDS type="Node" left="280" top="432" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Background Kalle" slicecount="1" values="|0.53369,0.36286,0.96125,0.00000|">
+   </PIN>
+   </NODE>
+   <PACK Name="dx11" Version="1.3.1">
+   </PACK>
+   <PACK Name="addonpack" Version="42.0.0">
+   </PACK>
+   <NODE systemname="AsSharedTexture (DX11.Texture 2d)" filename="%VVVV%\packs\dx11\nodes\plugins\base\VVVV.DX11.Nodes.dll" nodename="AsSharedTexture (DX11.Texture 2d)" componentmode="Hidden" id="11">
+   <BOUNDS type="Node" left="2376" top="2824" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2376" top="2824" width="1600" height="1600">
+   </BOUNDS>
+   <PIN pinname="Texture In" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pointer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="12">
+   <BOUNDS type="Box" left="2320" top="3616" width="1512" height="456">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2320" top="3616" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Pointer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Pointer" dstnodeid="12" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="ChangeFormat (DX11.Texture 2d)" filename="%VVVV%\packs\dx11\nodes\modules\ChangeFormat (DX11.Texture 2d).v4p" nodename="ChangeFormat (DX11.Texture 2d)" componentmode="Hidden" id="15">
+   <BOUNDS type="Node" left="2352" top="2000" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Texture In" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Target Format" slicecount="1" values="R32G32B32A32_UInt">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Output Node" dstnodeid="15" dstpinname="Texture In">
+   </LINK>
+   <LINK srcnodeid="15" srcpinname="Texture Out" dstnodeid="11" dstpinname="Texture In">
+   </LINK>
+   </PATCH>
